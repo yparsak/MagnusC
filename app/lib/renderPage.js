@@ -1,16 +1,17 @@
 'use strict';
 
-function renderDashBoard(res, page, data =  {}, options = {}) {
+function renderPage(res, template, page, data =  {}, options = {}) {
   const {
     title = 'Magnus'
   } = options;
 
-  res.render('dashboard', {
+  res.render(template, {
     ...data,
-    content: `pages/${page}`,
+    options,
     title
   });
-  
+
 }
 
-module.exports = { renderDashBoard };
+module.exports = { renderPage };
+
