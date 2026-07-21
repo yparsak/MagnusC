@@ -12,14 +12,11 @@
     <%- include('partials/header_right') %>
   </header>
 
-  <div class="grid-container">
-    <aside class="grid-panel">
-    </aside>
-    <section class="grid-panel">
-    </section>
-    <aside class="grid-panel">
-    </aside>
-  </div>
+<div class="container">
+  <main class="panel center">
+     <h2>Center Panel</h2>
+  </main>
+</div>
 
   <% if (typeof pageData !== 'undefined' && pageData) { %>
   <script>
@@ -30,6 +27,9 @@
   <% if (typeof pageScript !== 'undefined' && pageScript) { %>
     <script src="<%= pageScript %>?v=<%= assetVersion(pageScript) %>"></script>
   <% } %>
+
+  <%- include('partials/error') %>
+
 </body>
 </html>
    

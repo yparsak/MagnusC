@@ -6,7 +6,7 @@ const { renderPage } = require('../lib/renderPage');
 
 router.get('/', async (req, res) => {
   try {
-    renderPage(res, '1pane', 'game', {
+    renderPage (res,'3pane', 'board', {
       
       }
     );  

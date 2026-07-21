@@ -12,14 +12,21 @@
     <%- include('partials/header_right') %>
   </header>
 
-  <div class="container3">
-    <aside class="pane pane-left">
-    </aside>
-    <section class="pane pane-middle">
-    </section>
-    <aside class="pane pane-right">
-    </aside>
-  </div>
+<div class="container">
+    <div class="gridlayout">
+        <aside class="panel left">
+            <h2>Left Panel</h2>
+        </aside>
+
+        <main class="panel center">
+            <h2>Center Panel</h2>
+        </main>
+
+        <aside class="panel right">
+            <h2>Right Panel</h2>
+        </aside>
+    </div>
+</div>
 
   <% if (typeof pageData !== 'undefined' && pageData) { %>
   <script>
