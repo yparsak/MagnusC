@@ -200,7 +200,7 @@ a {
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: yellow;
     z-index: 9998;
 }
 
@@ -213,9 +213,10 @@ a {
     min-height: 200px;
     max-width: 80vw;
 
-    background: #fff;
+    background: #2a2a2a;
     border-radius: 8px;
     padding: 24px;
+    border: 1px solid #808080;
     box-shadow: 0 10px 40px rgba(0,0,0,.4);
     z-index: 9999;
     display: flex;
@@ -225,7 +226,7 @@ a {
 
 .error-modal h2 {
     margin: 0;
-    color: #c62828;
+    color: silver;
 }
 
 .error-modal button {
