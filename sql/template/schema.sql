@@ -9,9 +9,12 @@ CREATE TABLE IF NOT EXISTS platforms (
 --
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name varchar(20) NOT NULL,
-  lastname varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
+  name varchar(20) DEFAULT NULL,
+  lastname varchar(20) DEFAULT NULL,
+  username varchar(50) NOT NULL,
+  password_hash varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_username` (`username`)
 );
 
 --

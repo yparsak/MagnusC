@@ -37,6 +37,37 @@ a {
     gap: 30px;
 }
 
+.right-group {
+    align-items: center;
+    color: #cccccc;
+    display: flex;
+    font-size: 16px;
+    gap: 12px;
+}
+
+.right-group .divider {
+    color: #808080;
+}
+
+.right-group .current-user {
+    color: #e0e0e0;
+    font-weight: bold;
+}
+
+.link-button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0;
+    text-decoration: none;
+}
+
+.link-button:hover {
+    color: #2c73b8;
+}
+
 .logo {
     color: #aaaaaa;
     font-size: 32px;
@@ -188,6 +219,91 @@ a {
     }
 }
 
+
+/* ==========================================================================
+   AUTH / LOGIN
+   ========================================================================== */
+
+.auth-page {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: calc(100vh - 100px);
+    padding: 20px;
+}
+
+.auth-card {
+    background: #2a2a2a;
+    border: 1px solid #808080;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.4);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 360px;
+}
+
+.auth-card-title {
+    color: #e0e0e0;
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.auth-card-error {
+    background: rgba(217, 83, 79, 0.15);
+    border: 1px solid #d9534f;
+    border-radius: 4px;
+    color: #d9534f;
+    padding: 10px 14px;
+}
+
+.auth-card-hint {
+    color: #aaaaaa;
+    font-size: 14px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.auth-form label {
+    color: #cccccc;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.auth-form input {
+    background: #1a1a1a;
+    border: 1px solid #808080;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 16px;
+    padding: 10px 12px;
+}
+
+.auth-form input:focus {
+    border-color: #2c73b8;
+    outline: none;
+}
+
+.auth-submit {
+    background: #2c73b8;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    padding: 10px 12px;
+}
+
+.auth-submit:hover {
+    background: #2560a0;
+}
 
 /* ==========================================================================
    ERROR MODULE
