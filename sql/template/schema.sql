@@ -13,7 +13,6 @@ CREATE TABLE IF NOT EXISTS users (
   lastname varchar(20) DEFAULT NULL,
   username varchar(50) NOT NULL,
   password_hash varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
   UNIQUE KEY `uq_username` (`username`)
 );
 
