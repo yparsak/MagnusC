@@ -19,6 +19,62 @@ a {
     text-decoration: none;
 }
 
+thead{
+    background:#35322f;
+    position:sticky;
+    top:0;
+}
+
+thead th{
+    text-align:left;
+    font-weight:normal;
+    color:#b8b8b8;
+    padding:14px 20px;
+}
+
+tbody{
+
+    display:block;
+    overflow-y:auto;
+    height:calc(100vh - 170px);
+}
+
+thead,
+tbody tr{
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+
+tbody tr{
+    transition:.15s;
+}
+
+tbody tr:hover{
+    background:#3b3835;
+}
+
+tbody td{
+    padding:14px 20px;
+    border-bottom:1px solid #3b3b3b;
+    color:#d5d5d5;
+}
+
+.submit {
+    background: #2c73b8;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    padding: 10px 12px;
+}
+
+.submit:hover {
+    background: #2560a0;
+}
+
 /* ==========================================================================
    NAVBAR & NAVIGATION (MENU)
    ========================================================================== */
@@ -138,101 +194,125 @@ a {
    LAYOUT & CONTAINERS
    ========================================================================== */
 
-.container {
-    max-width: 1450px;
-    margin: 0 auto;
-    padding: 5px;
+.layout-single{
+    flex:1;
+    display:grid;
+    grid-template-columns:1fr;
+    padding:16px;
+    overflow:hidden;
 }
 
-.gridlayout {
-    display: grid;
-    grid-template-columns: 350px minmax(400px, 700px) 350px;
-    justify-content: center;
-    gap: 1px;
+.layout-three{
+    flex:1;
+    display:grid;
+    grid-template-columns:
+        280px
+        minmax(600px,1fr)
+        280px;
+    gap:16px;
+    padding:16px;
+    overflow:hidden;
 }
 
-.panel {
-    background: #2a2a2a;
-    border: 1px solid #808080;
-    padding: 20px;
-    border-radius: 8px;
-    min-height: 400px;
+.full-panel{
+    overflow:hidden;
 }
 
-.left,
-.center,
-.right {
-    background: #2a2a2a;
+.left-panel,
+.right-panel{
+    background:#2a2a2a;
+    border-radius:8px;
+    border:1px solid #383838;
 }
 
+.center-panel{
+    overflow:hidden;
+}
 
-/* -----------------------------
-   Small Desktops / Large Laptops (<=1450px)
-   Side panels shrink and center becomes fluid so nothing
-   overflows before the tablet breakpoint kicks in.
-------------------------------*/
-@media (max-width: 1450px) {
-    .gridlayout {
-        grid-template-columns: 300px minmax(320px, 1fr) 300px;
-        gap: 12px;
+.card{
+    height:100%;
+    background:#2b2927;
+    border-radius:8px;
+    border:1px solid #3b3b3b;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+.content{
+    flex:1;
+    overflow:auto;
+    padding:24px;
+    color:#ddd;
+}
+
+.full-panel .card{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    background:#2b2927;
+    border:1px solid #3b3b3b;
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.tabs{
+    display:flex;
+    background:#302e2b;
+    border-bottom:1px solid #444;
+}
+
+.tab{
+    padding:14px 24px;
+    color:#aaa;
+    cursor:pointer;
+}
+
+.tab.active{
+    color:#f2f2f2;
+    border-bottom:3px solid #d48b2d;
+}
+
+.table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#555;
+    border-radius:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#2a2a2a;
+}
+
+@media (max-width:1200px){
+    .layout{
+        grid-template-columns:
+            220px
+            1fr;
+    }
+
+    .right-panel{
+        display:none;
+    }
+
+}
+
+@media (max-width:850px){
+    .layout{
+        grid-template-columns:1fr;
+    }
+    .left-panel{
+        display:none;
     }
 }
 
-/* -----------------------------
-   Large Tablets (<=1024px)
-------------------------------*/
-@media (max-width: 1024px) {
-    .gridlayout {
-        grid-template-columns: 220px minmax(260px, 1fr) 220px;
-        gap: 16px;
-    }
-    .panel {
-        min-height: 250px;
-    }
-}
-
-/* -----------------------------
-   Tablets (<=768px)
-------------------------------*/
-@media (max-width: 768px) {
-    .gridlayout {
-        grid-template-columns: 200px minmax(240px, 1fr);
-        gap: 12px;
-        grid-template-areas:
-            "left center"
-            "right right";
-    }
-
-    .left {
-        grid-area: left;
-    }
-    .center {
-        grid-area: center;
-    }
-    .right {
-        grid-area: right;
-    }
-}
-
-/* -----------------------------
-   Phones (<=480px)
-------------------------------*/
-@media (max-width: 480px) {
-
-    body {
-        padding: 12px;
-    }
-    .gridlayout {
-        grid-template-columns: minmax(260px, 1fr);
-        grid-template-areas:
-            "left"
-            "center"
-            "right";
-    }
-    .panel {
-        min-height: auto;
-    }
-}
 
 /* ==========================================================================
    AUTH / LOGIN
@@ -304,20 +384,6 @@ a {
     outline: none;
 }
 
-.auth-submit {
-    background: #2c73b8;
-    border: none;
-    border-radius: 4px;
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    padding: 10px 12px;
-}
-
-.auth-submit:hover {
-    background: #2560a0;
-}
 
 /* ==========================================================================
    ERROR MODULE
