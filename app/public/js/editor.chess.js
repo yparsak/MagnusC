@@ -1,35 +1,17 @@
 // =============================================================================
-// custom.chess.js
+// editor.chess.js
+// Board editor page only (see views/pages/board_editor.ejs). Handles the
+// editable board, spare pieces, erase tool, and FEN/turn/castling/en-passant
+// controls. Navigates to the analysis page via a full page redirect.
 // =============================================================================
-
-function showError(message) {
-  $('#errorMessage').text(message);
-  $('#overlay').removeClass('hidden');
-  $('#errorModal').removeClass('hidden');
-}
-
-function closeError() {
-  $('#overlay').addClass('hidden');
-  $('#errorModal').addClass('hidden');
-}
 
 $(function () {
   if (!$('#board').length) {
     return;
   }
 
-  var currentMode = 'editor';
   var eraseMode = false;
-
   var editorBoard = null;
-  var analysisBoard = null;
-
-  // Authoritative chess.js game for analysis mode. moveHistory/viewIndex let
-  // arrow keys browse past positions without mutating `game`.
-  var game = null;
-  var analysisInitialFen = null;
-  var moveHistory = [];
-  var viewIndex = 0;
 
   initEditor();
   bindControls();
@@ -37,7 +19,13 @@ $(function () {
   function initEditor() {
     editorBoard = createEditorBoard();
     populateEnPassantOptions();
-    syncFenField();
+
+    var pageData = window.MAGNUS_PAGE_DATA || {};
+    if (pageData.fen) {
+      applyFenString(pageData.fen);
+    } else {
+      syncFenField();
+    }
   }
 
   function createEditorBoard() {
@@ -195,12 +183,7 @@ $(function () {
 
     $('#linkAnalysisBoard').on('click', function (e) {
       e.preventDefault();
-      startAnalysis();
-    });
-
-    $('#linkBackToEditor').on('click', function (e) {
-      e.preventDefault();
-      backToEditor();
+      goToAnalysis();
     });
 
     $('#toolPointer').on('click', function () {
@@ -216,7 +199,7 @@ $(function () {
     });
 
     $('#board').on('click', '.square-55d63', function () {
-      if (!eraseMode || currentMode !== 'editor') {
+      if (!eraseMode) {
         return;
       }
       var square = $(this).data('square');
@@ -227,160 +210,18 @@ $(function () {
       }
     });
 
-    $(document).on('keydown', function (e) {
-      if (currentMode !== 'analysis') {
-        return;
-      }
-      var tag = (e.target.tagName || '').toLowerCase();
-      if (tag === 'input' || tag === 'textarea') {
-        return;
-      }
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        stepView(-1);
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        stepView(1);
-      }
-    });
-
     $(window).on('resize', function () {
       if (editorBoard) editorBoard.resize();
-      if (analysisBoard) analysisBoard.resize();
     });
   }
 
-  function startAnalysis() {
+  function goToAnalysis() {
     var fen = buildFenFromEditor();
     var validation = new Chess().validate_fen(fen);
     if (!validation.valid) {
       showError('Invalid position: ' + validation.error);
       return;
     }
-
-    game = new Chess(fen);
-    analysisInitialFen = fen;
-    moveHistory = game.history({ verbose: true });
-    viewIndex = moveHistory.length;
-    currentMode = 'analysis';
-
-    editorBoard.destroy();
-    editorBoard = null;
-
-    $('#editorControls').addClass('hidden');
-    $('.edit-tools').addClass('hidden');
-    $('#analysisPanel').removeClass('hidden');
-    $('#fenInput').prop('readonly', true);
-
-    analysisBoard = Chessboard('board', {
-      draggable: true,
-      position: game.fen(),
-      pieceTheme: '/imgs/{piece}.png',
-      onDragStart: onAnalysisDragStart,
-      onDrop: onAnalysisDrop,
-      onSnapEnd: function () {
-        analysisBoard.position(game.fen());
-      }
-    });
-
-    renderMoveList();
-    $('#fenInput').val(game.fen());
-  }
-
-  function backToEditor() {
-    var fen = game ? game.fen() : analysisInitialFen;
-
-    analysisBoard.destroy();
-    analysisBoard = null;
-    game = null;
-    moveHistory = [];
-    viewIndex = 0;
-    currentMode = 'editor';
-    eraseMode = false;
-    $('#toolPointer').addClass('active');
-    $('#toolTrash').removeClass('active');
-
-    $('#editorControls').removeClass('hidden');
-    $('.edit-tools').removeClass('hidden');
-    $('#analysisPanel').addClass('hidden');
-    $('#fenInput').prop('readonly', false);
-
-    editorBoard = createEditorBoard();
-    applyFenString(fen);
-  }
-
-  function onAnalysisDragStart(source, piece) {
-    if (viewIndex !== moveHistory.length || game.game_over()) {
-      return false;
-    }
-    if ((game.turn() === 'w' && piece.charAt(0) === 'b') ||
-        (game.turn() === 'b' && piece.charAt(0) === 'w')) {
-      return false;
-    }
-  }
-
-  function onAnalysisDrop(source, target) {
-    if (viewIndex !== moveHistory.length) {
-      return 'snapback';
-    }
-    var moveObj = game.move({ from: source, to: target, promotion: 'q' });
-    if (moveObj === null) {
-      return 'snapback';
-    }
-    moveHistory = game.history({ verbose: true });
-    viewIndex = moveHistory.length;
-    renderMoveList();
-    $('#fenInput').val(game.fen());
-  }
-
-  function renderViewPosition() {
-    var temp = new Chess(analysisInitialFen);
-    for (var i = 0; i < viewIndex; i++) {
-      temp.move({ from: moveHistory[i].from, to: moveHistory[i].to, promotion: moveHistory[i].promotion });
-    }
-    analysisBoard.position(temp.fen(), false);
-    $('#fenInput').val(temp.fen());
-  }
-
-  function stepView(delta) {
-    var next = viewIndex + delta;
-    if (next < 0 || next > moveHistory.length) {
-      return;
-    }
-    viewIndex = next;
-    renderViewPosition();
-    renderMoveList();
-  }
-
-  function renderMoveList() {
-    var $list = $('#moveList').empty();
-
-    for (var i = 0; i < moveHistory.length; i += 2) {
-      var $row = $('<div>', { class: 'move-row' });
-      $row.append($('<span>', { class: 'move-number', text: (i / 2 + 1) + '.' }));
-      $row.append(buildMoveSpan(i));
-      if (moveHistory[i + 1]) {
-        $row.append(buildMoveSpan(i + 1));
-      }
-      $list.append($row);
-    }
-
-    $list.find('.move-san').on('click', function () {
-      viewIndex = parseInt($(this).data('index'), 10);
-      renderViewPosition();
-      renderMoveList();
-    });
-  }
-
-  function buildMoveSpan(historyIndex) {
-    var $span = $('<span>', {
-      class: 'move-san',
-      text: moveHistory[historyIndex].san,
-      'data-index': historyIndex + 1
-    });
-    if (viewIndex === historyIndex + 1) {
-      $span.addClass('active-move');
-    }
-    return $span;
+    window.location.href = '/editor/analysis?fen=' + encodeURIComponent(fen);
   }
 });

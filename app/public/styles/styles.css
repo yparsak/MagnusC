@@ -493,6 +493,9 @@ tbody td{
 
 .spare-pieces-7492f {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
 }
 
 .spare-pieces-top-4028b {
@@ -501,6 +504,18 @@ tbody td{
 
 .spare-pieces-bottom-ae20f {
     margin-top: 8px;
+}
+
+/* chessboard.js positions on-board pieces absolutely for its drag/snap
+   animations, but relies on the browser's static-position layout to lay
+   spare pieces out side by side. .piece-417db's blanket `position: absolute`
+   (with no top/left set) collapses the spare-piece rows on top of each
+   other -- put those images back in normal flow inside the flex rows above.
+   chessboard.js drags a separate cloned/absolutely-positioned "drag ghost"
+   element, not the spare-piece <img> itself, so this is safe for dragging. */
+.spare-pieces-top-4028b .piece-417db,
+.spare-pieces-bottom-ae20f .piece-417db {
+    position: relative;
 }
 
 
