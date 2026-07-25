@@ -6,8 +6,11 @@ const { renderPage } = require('../lib/renderPage');
 
 router.get('/', async (req, res) => {
   try {
-    renderPage(res, '1pane', 'game', {
-      
+    renderPage(res, 'main_template', 'index', {
+        mode: null,
+        title: 'Magnus',
+        showPromotionLayer: false,
+        pageData: {}       
       }
     );  
   }

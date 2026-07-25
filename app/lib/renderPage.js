@@ -2,15 +2,16 @@
 
 function renderPage(res, template, page, data =  {}, options = {}) {
   const {
-    title = 'Magnus'
+    title = 'Magnus',
+    mode  = null
   } = options;
 
   res.render(template, {
     ...data,
-    options,
-    title
+    content: `pages/${page}`,
+    title,
+    mode
   });
-
 }
 
 module.exports = { renderPage };

@@ -6,8 +6,11 @@ const { renderPage } = require('../lib/renderPage');
 
 router.get('/', async (req, res) => {
   try {
-    renderPage (res,'3pane', 'board', {
-      
+    renderPage (res,'main_template', 'board_editor', {
+        mode: 'editor',
+        title: 'Magnus - Board Editor',
+        showPromotionLayer: false,
+        pageData: {} 
       }
     );  
   }
