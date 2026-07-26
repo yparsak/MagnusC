@@ -3,18 +3,20 @@ const router = express.Router();
 const pool   = require('../lib/db');
 
 const { renderPage } = require('../lib/renderPage');
-const { isValidFen } = require('../lib/chess');
+const { isValidFen } = require('../lib/chess'); 
 
 router.get('/', async (req, res) => {
   try {
     var fen = req.query.fen;
-    var pageData = (typeof fen === 'string' && isValidFen(fen)) ? { fen: fen } : {};
+    if (typeof fen !== 'string' || !isValidFen(fen)) {
+      return res.redirect('/editor');
+    }
 
-    renderPage (res,'main_template', 'board_editor', {
+    renderPage (res,'main_template', 'analysis', {
         mode: 'editor',
-        title: 'Magnus - Board Editor',
+        title: 'Magnus - Analysis Board',
         showPromotionLayer: false,
-        pageData: pageData
+        pageData: { fen: fen }
       }
     );
   }

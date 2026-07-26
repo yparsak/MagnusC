@@ -5,6 +5,7 @@ const express = require('express');
 const session = require('express-session');
 const indexRouter = require('./routes/indexRouter');
 const editorRouter  = require('./routes/editorRouter');
+const analysisRouter = require('./routes/analysisRouter');
 const apiRouter   = require('./routes/apiRouter');
 const authRouter  = require('./routes/authRouter');
 const { attachCurrentUser, requireAuth } = require('./lib/auth');
@@ -35,6 +36,7 @@ app.use('/', authRouter);   // /login, /logout must stay reachable while unauthe
 app.use(requireAuth);
 app.use('/',      indexRouter);
 app.use('/editor',editorRouter);
+app.use('/analysis',analysisRouter);
 app.use('/api',   apiRouter);
 
 app.listen(PORT, () => {

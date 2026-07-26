@@ -222,6 +222,6 @@ $(function () {
       showError('Invalid position: ' + validation.error);
       return;
     }
-    window.location.href = '/editor/analysis?fen=' + encodeURIComponent(fen);
+    window.location.href = '/analysis?fen=' + encodeURIComponent(fen);
   }
 });
