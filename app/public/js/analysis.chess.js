@@ -26,13 +26,12 @@ $(function () {
     var pageData = window.MAGNUS_PAGE_DATA || {};
     var fen = pageData.fen;
 
-    if (!fen || !new Chess().validate_fen(fen).valid) {
-      window.location.href = '/editor';
-      return;
-    }
-
-    game = new Chess(fen);
-    analysisInitialFen = fen;
+    // A missing fen means "start a fresh analysis" (e.g. the nav link) --
+    // default to the standard starting position instead of bouncing away.
+    // A present-but-invalid fen is unexpected, so fall back the same way
+    // rather than handing a malformed string to `new Chess(fen)`.
+    game = (fen && new Chess().validate_fen(fen).valid) ? new Chess(fen) : new Chess();
+    analysisInitialFen = game.fen();
     moveHistory = game.history({ verbose: true });
     viewIndex = moveHistory.length;
 

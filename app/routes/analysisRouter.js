@@ -8,15 +8,13 @@ const { isValidFen } = require('../lib/chess');
 router.get('/', async (req, res) => {
   try {
     var fen = req.query.fen;
-    if (typeof fen !== 'string' || !isValidFen(fen)) {
-      return res.redirect('/editor');
-    }
+    var pageData = (typeof fen === 'string' && isValidFen(fen)) ? { fen: fen } : {};
 
     renderPage (res,'main_template', 'analysis', {
         mode: 'editor',
         title: 'Magnus - Analysis Board',
         showPromotionLayer: false,
-        pageData: { fen: fen }
+        pageData: pageData
       }
     );
   }
