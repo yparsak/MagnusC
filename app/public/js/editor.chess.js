@@ -31,7 +31,7 @@ $(function () {
   function createEditorBoard() {
     return Chessboard('board', {
       draggable: true,
-      dropOffBoard: 'trash',
+      dropOffBoard: "trash",
       sparePieces: true,
       position: 'start',
       pieceTheme: '/imgs/{piece}.png',
