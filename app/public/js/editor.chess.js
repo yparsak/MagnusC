@@ -18,7 +18,6 @@ $(function () {
 
   function initEditor() {
     editorBoard = createEditorBoard();
-    injectSpareToolButtons();
     populateEnPassantOptions();
 
     var pageData = window.MAGNUS_PAGE_DATA || {};
@@ -37,24 +36,6 @@ $(function () {
       position: 'start',
       pieceTheme: '/imgs/{piece}.png',
       onChange: onEditorBoardChange
-    });
-  }
-
-  // chessboard.js rebuilds each spare-piece row's innerHTML from scratch on
-  // every redraw (resize, flip, orientation change), so the tool buttons
-  // can't live *inside* the row itself or they'd be wiped out. Instead wrap
-  // each row in our own container and drop the buttons in as a sibling --
-  // wrapping doesn't touch chessboard.js's cached jQuery reference to the
-  // row, so its redraws keep working normally.
-  function injectSpareToolButtons() {
-    var toolsHtml =
-      '<div class="spare-tools">' +
-        '<button type="button" class="edit-tool-btn tool-pointer-btn active" title="Move pieces" aria-label="Move pieces">&#9995;</button>' +
-        '<button type="button" class="edit-tool-btn tool-trash-btn" title="Delete pieces" aria-label="Delete pieces">&#128465;</button>' +
-      '</div>';
-
-    $('.spare-pieces-top-4028b, .spare-pieces-bottom-ae20f').each(function () {
-      $(this).wrap('<div class="spare-row-wrap"></div>').parent().append(toolsHtml);
     });
   }
 
@@ -195,29 +176,25 @@ $(function () {
       syncFenField();
     });
 
-    $('#linkFlipBoard').on('click', function (e) {
-      e.preventDefault();
-      editorBoard.flip();
-    });
-
     $('#linkAnalysisBoard').on('click', function (e) {
       e.preventDefault();
       goToAnalysis();
     });
 
-    // Four buttons (pointer + trash in both the black and white spare-piece
-    // rows) share one erase-mode toggle for the whole board, so delegate by
-    // class and keep every button's active state in sync.
-    $('#board').on('click', '.tool-pointer-btn', function () {
+    $('#toolPointerBtn').on('click', function () {
       eraseMode = false;
-      $('.tool-pointer-btn').addClass('active');
-      $('.tool-trash-btn').removeClass('active');
+      $('#toolPointerBtn').addClass('active');
+      $('#toolTrashBtn').removeClass('active');
     });
 
-    $('#board').on('click', '.tool-trash-btn', function () {
+    $('#toolTrashBtn').on('click', function () {
       eraseMode = true;
-      $('.tool-trash-btn').addClass('active');
-      $('.tool-pointer-btn').removeClass('active');
+      $('#toolTrashBtn').addClass('active');
+      $('#toolPointerBtn').removeClass('active');
+    });
+
+    $('#toolRotateBtn').on('click', function () {
+      editorBoard.flip();
     });
 
     $('#board').on('click', '.square-55d63', function () {

@@ -103,38 +103,32 @@ div[class*="spare-pieces-"] {
     max-width: 640px;
 }
 
-/* Wraps each chessboard.js spare-piece row so the tool buttons can sit
-   alongside it without living inside the row itself -- that row's innerHTML
-   gets fully replaced by chessboard.js on every redraw (resize/flip). */
-.spare-row-wrap {
-    position: relative;
-}
-
-.spare-tools {
+.board-toolbar {
     display: flex;
-    gap: 4px;
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 200;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
 .edit-tool-btn {
+    align-items: center;
     background: #2b2927;
     border: 1px solid #3b3b3b;
     border-radius: 4px;
-    color: #cccccc;
     cursor: pointer;
-    font-size: 18px;
+    display: flex;
+    justify-content: center;
     padding: 8px;
     width: 36px;
+}
+
+.edit-tool-btn img {
+    height: 20px;
+    width: 20px;
 }
 
 .edit-tool-btn.active {
     background: #2c73b8;
     border-color: #2c73b8;
-    color: #ffffff;
 }
 
 .editor-panel {

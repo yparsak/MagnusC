@@ -2,6 +2,11 @@
     <div class="layout-double">
       <main class="center-column">
         <div class="board-wrap">
+          <div class="board-toolbar">
+            <button type="button" id="toolPointerBtn" class="edit-tool-btn tool-pointer-btn active" title="Move pieces" aria-label="Move pieces"><img src="/imgs/hand.png" alt=""></button>
+            <button type="button" id="toolTrashBtn" class="edit-tool-btn tool-trash-btn" title="Delete pieces" aria-label="Delete pieces"><img src="/imgs/trash.png" alt=""></button>
+            <button type="button" id="toolRotateBtn" class="edit-tool-btn tool-rotate-btn" title="Flip board" aria-label="Flip board"><img src="/imgs/rotate.png" alt=""></button>
+          </div>
           <div id="board" class="board-container"></div>
           <div class="fen-row">
             <input type="text" id="fenInput" class="editor-text-input fen-input" spellcheck="false">
@@ -44,7 +49,6 @@
           <div class="editor-links">
             <a href="#" id="linkStartPos" class="editor-link">Starting position</a>
             <a href="#" id="linkClearBoard" class="editor-link">Clear board</a>
-            <a href="#" id="linkFlipBoard" class="editor-link">Flip board</a>
             <a href="#" id="linkAnalysisBoard" class="editor-link">Analysis board</a>
           </div>
         </div>
