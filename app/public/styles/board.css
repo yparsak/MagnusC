@@ -103,6 +103,19 @@ div[class*="spare-pieces-"] {
     max-width: 640px;
 }
 
+/* Overlay for annotation arrows/circles (see board-annotations.js). Sits
+   above pieces (z-index: 100) so drawings stay visible over them, but never
+   intercepts pointer events -- the drawing module listens on #board itself. */
+.board-annotations-layer {
+    height: 100%;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 150;
+}
+
 .board-toolbar {
     display: flex;
     gap: 8px;

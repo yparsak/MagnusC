@@ -46,6 +46,10 @@ $(function () {
       }
     });
 
+    if (window.BoardAnnotations) {
+      window.BoardAnnotations.init(analysisBoard);
+    }
+
     renderMoveList();
     $('#fenInput').val(game.fen());
   }
@@ -97,6 +101,10 @@ $(function () {
     viewIndex = moveHistory.length;
     renderMoveList();
     $('#fenInput').val(game.fen());
+
+    if (window.BoardAnnotations) {
+      window.BoardAnnotations.clear();
+    }
   }
 
   function renderViewPosition() {
@@ -106,6 +114,12 @@ $(function () {
     }
     analysisBoard.position(temp.fen(), false);
     $('#fenInput').val(temp.fen());
+
+    // Every navigation path (arrow keys, move-list clicks) funnels through
+    // here, so this is the single choke point for clearing stale drawings.
+    if (window.BoardAnnotations) {
+      window.BoardAnnotations.clear();
+    }
   }
 
   function stepView(delta) {
